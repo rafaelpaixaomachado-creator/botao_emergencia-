@@ -1,31 +1,30 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta tag obrigatória para forçar o layout a se comportar como um App Mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>App Emergência</title>
+
     <style>
-        /* Reset e estilização de fundo imitando o "Dark Mode" do celular */
-        body {<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <!-- Meta tag obrigatória para forçar o layout a se comportar como um App Mobile -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>App Emergência</title>
-    <style>
-        /* Reset e estilização de fundo imitando o "Dark Mode" do celular */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             background-color: #121212;
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+
+            width: 100%;
             height: 100vh;
+            height: 100dvh;
+
             margin: 0;
             overflow: hidden;
         }
@@ -33,22 +32,23 @@
         .app-header {
             position: absolute;
             top: 60px;
+            left: 20px;
+            right: 20px;
             text-align: center;
         }
-       
+
         .app-header h1 {
             margin: 0;
             font-size: 28px;
             color: #ff4757;
         }
-       
+
         .app-header p {
             color: #a4b0be;
             font-size: 15px;
             margin-top: 8px;
         }
-       
-        /* Container relativo para controlar o botão e a animação do fundo */
+
         .panic-button-container {
             position: relative;
             display: flex;
@@ -56,257 +56,271 @@
             align-items: center;
         }
 
-        /* Efeito visual de "radar" ou "pulso" contínuo atrás do botão */
         .pulse-ring {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+
             width: 220px;
             height: 220px;
+
+            transform: translate(-50%, -50%);
+
             background-color: rgba(255, 71, 87, 0.4);
             border-radius: 50%;
+
             animation: pulse 2s infinite;
+
             z-index: 0;
+            pointer-events: none;
         }
 
         @keyframes pulse {
-            0% { width: 220px; height: 220px; opacity: 1; }
-            100% { width: 400px; height: 400px; opacity: 0; }
+            0% {
+                width: 220px;
+                height: 220px;
+                opacity: 1;
+            }
+
+            100% {
+                width: 400px;
+                height: 400px;
+                opacity: 0;
+            }
         }
 
-        /* Estilização moderna do botão nativo (Neumorphism UI adaptado) */
         .panic-btn {
             position: relative;
             z-index: 1;
-            background: linear-gradient(145deg, #ff6b81, #ff4757);
-            color: white;
-            border: none;
-            border-radius: 50%;
+
             width: 240px;
             height: 240px;
+
+            border: none;
+            border-radius: 50%;
+
+            background: linear-gradient(145deg, #ff6b81, #ff4757);
+
+            color: white;
+
             font-size: 40px;
             font-weight: 900;
             letter-spacing: 3px;
+
             cursor: pointer;
-            box-shadow: 0 20px 40px rgba(255, 71, 87, 0.5), inset 0 5px 15px rgba(255,255,255,0.3);
-            transition: all 0.15s ease-in-out;
+
+            box-shadow:
+                0 20px 40px rgba(255, 71, 87, 0.5),
+                inset 0 5px 15px rgba(255, 255, 255, 0.3);
+
+            transition: transform 0.15s ease,
+                        box-shadow 0.15s ease;
+
             display: flex;
             justify-content: center;
             align-items: center;
-            -webkit-tap-highlight-color: transparent; /* Remove a caixa azul chata em cliques no celular */
+
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
-        /* Ação de apertar o botão fisicamente (pressionado) */
         .panic-btn:active {
             transform: scale(0.92);
-            box-shadow: 0 10px 20px rgba(255, 71, 87, 0.5), inset 0 15px 30px rgba(0,0,0,0.3);
+
+            box-shadow:
+                0 10px 20px rgba(255, 71, 87, 0.5),
+                inset 0 15px 30px rgba(0, 0, 0, 0.3);
         }
 
-        /* Texto de resposta que aparece no final da tela */
+        .panic-btn:disabled {
+            opacity: 0.7;
+            cursor: wait;
+        }
+
         .status-text {
             position: absolute;
             bottom: 80px;
+
+            width: 90%;
+
+            text-align: center;
+
             font-size: 18px;
             font-weight: bold;
+
             color: #2ed573;
+
             opacity: 0;
+
             transition: opacity 0.3s;
         }
 
         .status-text.show {
             opacity: 1;
         }
-    </style>
-</head>
-<body>
 
-    <div class="app-header">
-        <h1>Assistência Pessoal</h1>
-        <p>Toque no botão central em caso de emergência</p>
-    </div>
-
-    <div class="panic-button-container">
-        <!-- Animação do Pulso Atrás do Botão -->
-        <div class="pulse-ring"></div>
-        <!-- Botão Principal de Ação -->
-        <button class="panic-btn" onclick="acionarEmergencia()">S.O.S</button>
-    </div>
-
-    <!-- Label escondida que vai aparecer após o clique -->
-    <div id="status" class="status-text">
-        Alerta enviado com sucesso!
-    </div>
-
-    <script>
-        function acionarEmergencia() {
-            // Se testado em um celular real via Web, ele vai acionar a vibração física!
-            if (navigator.vibrate) {
-                // Vibra (200ms), Pausa (100ms), Vibra (200ms)
-                navigator.vibrate([200, 100, 200]);
-            }
-           
-            // Mostra o feedback visual verde na tela
-            const status = document.getElementById('status');
-            status.classList.add('show');
-           
-            // Simula uma resposta do sistema (um alerta saltando na tela como os nativos)
-            setTimeout(() => {
-                alert("🚨 EMERGÊNCIA ACIONADA!\n\nSua localização GPS aproximada foi enviada para os contatos de segurança cadastrados.");
-               
-                // Apaga o status após a confirmação para poder testar de novo
-                setTimeout(() => {
-                    status.classList.remove('show');
-                }, 2000);
-
-            }, 500); // 500ms de delay para simular comunicação de rede
-        }
-    </script>
-</body>
-</html>
-            background-color: #121212;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .app-header {
-            position: absolute;
-            top: 60px;
-            text-align: center;
-        }
-       
-        .app-header h1 {
-            margin: 0;
-            font-size: 28px;
+        .status-text.error {
             color: #ff4757;
         }
-       
-        .app-header p {
-            color: #a4b0be;
-            font-size: 15px;
-            margin-top: 8px;
-        }
-       
-        /* Container relativo para controlar o botão e a animação do fundo */
-        .panic-button-container {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
 
-        /* Efeito visual de "radar" ou "pulso" contínuo atrás do botão */
-        .pulse-ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 220px;
-            height: 220px;
-            background-color: rgba(255, 71, 87, 0.4);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-            z-index: 0;
-        }
+        @media (max-height: 600px) {
+            .app-header {
+                top: 20px;
+            }
 
-        @keyframes pulse {
-            0% { width: 220px; height: 220px; opacity: 1; }
-            100% { width: 400px; height: 400px; opacity: 0; }
-        }
+            .panic-btn {
+                width: 190px;
+                height: 190px;
+                font-size: 32px;
+            }
 
-        /* Estilização moderna do botão nativo (Neumorphism UI adaptado) */
-        .panic-btn {
-            position: relative;
-            z-index: 1;
-            background: linear-gradient(145deg, #ff6b81, #ff4757);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 240px;
-            height: 240px;
-            font-size: 40px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            cursor: pointer;
-            box-shadow: 0 20px 40px rgba(255, 71, 87, 0.5), inset 0 5px 15px rgba(255,255,255,0.3);
-            transition: all 0.15s ease-in-out;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            -webkit-tap-highlight-color: transparent; /* Remove a caixa azul chata em cliques no celular */
-        }
+            .pulse-ring {
+                width: 180px;
+                height: 180px;
+            }
 
-        /* Ação de apertar o botão fisicamente (pressionado) */
-        .panic-btn:active {
-            transform: scale(0.92);
-            box-shadow: 0 10px 20px rgba(255, 71, 87, 0.5), inset 0 15px 30px rgba(0,0,0,0.3);
-        }
-
-        /* Texto de resposta que aparece no final da tela */
-        .status-text {
-            position: absolute;
-            bottom: 80px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #2ed573;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .status-text.show {
-            opacity: 1;
+            .status-text {
+                bottom: 30px;
+            }
         }
     </style>
 </head>
+
 <body>
 
-    <div class="app-header">
+    <header class="app-header">
         <h1>Assistência Pessoal</h1>
         <p>Toque no botão central em caso de emergência</p>
-    </div>
+    </header>
 
-    <div class="panic-button-container">
-        <!-- Animação do Pulso Atrás do Botão -->
+    <main class="panic-button-container">
+
         <div class="pulse-ring"></div>
-        <!-- Botão Principal de Ação -->
-        <button class="panic-btn" onclick="acionarEmergencia()">S.O.S</button>
-    </div>
 
-    <!-- Label escondida que vai aparecer após o clique -->
-    <div id="status" class="status-text">
-        Alerta enviado com sucesso!
+        <button
+            id="panicButton"
+            class="panic-btn"
+            type="button"
+            onclick="acionarEmergencia()"
+            aria-label="Acionar emergência"
+        >
+            S.O.S
+        </button>
+
+    </main>
+
+    <div id="status" class="status-text" role="status">
+        Alerta preparado!
     </div>
 
     <script>
-        function acionarEmergencia() {
-            // Se testado em um celular real via Web, ele vai acionar a vibração física!
-            if (navigator.vibrate) {
-                // Vibra (200ms), Pausa (100ms), Vibra (200ms)
+        function mostrarStatus(mensagem, erro = false) {
+            const status = document.getElementById("status");
+
+            status.textContent = mensagem;
+            status.classList.toggle("error", erro);
+            status.classList.add("show");
+
+            setTimeout(() => {
+                status.classList.remove("show");
+            }, 3000);
+        }
+
+        function vibrar() {
+            if ("vibrate" in navigator) {
                 navigator.vibrate([200, 100, 200]);
             }
-           
-            // Mostra o feedback visual verde na tela
-            const status = document.getElementById('status');
-            status.classList.add('show');
-           
-            // Simula uma resposta do sistema (um alerta saltando na tela como os nativos)
-            setTimeout(() => {
-                alert("🚨 EMERGÊNCIA ACIONADA!\n\nSua localização GPS aproximada foi enviada para os contatos de segurança cadastrados.");
-               
-                // Apaga o status após a confirmação para poder testar de novo
-                setTimeout(() => {
-                    status.classList.remove('show');
-                }, 2000);
+        }
 
-            }, 500); // 500ms de delay para simular comunicação de rede
+        function obterLocalizacao() {
+            return new Promise((resolve, reject) => {
+
+                if (!navigator.geolocation) {
+                    reject(new Error("Geolocalização não é suportada neste dispositivo."));
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        resolve({
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            precisao: position.coords.accuracy
+                        });
+                    },
+
+                    error => {
+                        reject(error);
+                    },
+
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            });
+        }
+
+        async function acionarEmergencia() {
+
+            const botao = document.getElementById("panicButton");
+
+            vibrar();
+
+            botao.disabled = true;
+
+            mostrarStatus("Obtendo sua localização...");
+
+            try {
+
+                const localizacao = await obterLocalizacao();
+
+                console.log("Localização obtida:", localizacao);
+
+                mostrarStatus("Localização obtida com sucesso!");
+
+                setTimeout(() => {
+
+                    alert(
+                        "🚨 EMERGÊNCIA ACIONADA!\n\n" +
+                        "Localização obtida:\n" +
+                        "Latitude: " + localizacao.latitude.toFixed(6) + "\n" +
+                        "Longitude: " + localizacao.longitude.toFixed(6) + "\n\n" +
+                        "A localização ainda NÃO foi enviada para contatos. " +
+                        "Para isso, é necessário conectar o aplicativo a um servidor/API."
+                    );
+
+                }, 500);
+
+            } catch (erro) {
+
+                console.error("Erro ao obter localização:", erro);
+
+                mostrarStatus(
+                    "Não foi possível obter sua localização.",
+                    true
+                );
+
+                setTimeout(() => {
+
+                    alert(
+                        "🚨 EMERGÊNCIA ACIONADA!\n\n" +
+                        "Não foi possível obter sua localização.\n\n" +
+                        "Verifique se o GPS/localização está ativado " +
+                        "e se o navegador possui permissão."
+                    );
+
+                }, 500);
+
+            } finally {
+
+                setTimeout(() => {
+                    botao.disabled = false;
+                }, 1000);
+            }
         }
     </script>
+
 </body>
 </html>
