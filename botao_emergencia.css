@@ -1,4 +1,3 @@
-```css
 /* ==============================
    RESET
 ============================== */
@@ -20,6 +19,7 @@ body {
     min-height: 100dvh;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -35,13 +35,38 @@ body {
 
     color: #ffffff;
 
+    /* FUNDO VERMELHO */
     background:
         radial-gradient(
             circle at center,
-            #241316 0%,
-            #151515 40%,
-            #090909 100%
+            #b71c2b 0%,
+            #8b0f1c 45%,
+            #4a080f 100%
         );
+}
+
+
+/* ==============================
+   EFEITO ESCURO NAS BORDAS
+============================== */
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle,
+            transparent 30%,
+            rgba(0, 0, 0, 0.15) 55%,
+            rgba(0, 0, 0, 0.45) 100%
+        );
+
+    pointer-events: none;
+
+    z-index: 0;
 }
 
 
@@ -71,7 +96,8 @@ body {
     color: #ffffff;
 
     text-shadow:
-        0 0 20px rgba(255, 71, 87, 0.25);
+        0 2px 10px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(255, 71, 87, 0.3);
 }
 
 .app-header h1::after {
@@ -89,17 +115,20 @@ body {
     background: #ff4757;
 
     box-shadow:
-        0 0 12px rgba(255, 71, 87, 0.7);
+        0 0 12px rgba(255, 71, 87, 0.8);
 }
 
 .app-header p {
     margin-top: 14px;
 
-    color: #a9a9b0;
+    color: #ffd6da;
 
     font-size: clamp(13px, 4vw, 16px);
 
     line-height: 1.5;
+
+    text-shadow:
+        0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 
@@ -116,6 +145,8 @@ body {
 
     width: 280px;
     height: 280px;
+
+    z-index: 2;
 }
 
 
@@ -129,18 +160,19 @@ body {
     top: 50%;
     left: 50%;
 
-    width: 250px;
-    height: 250px;
+    width: 230px;
+    height: 230px;
 
     transform: translate(-50%, -50%);
 
     border-radius: 50%;
 
-    background: rgba(255, 71, 87, 0.15);
+    background: rgba(255, 71, 87, 0.20);
 
-    border: 2px solid rgba(255, 71, 87, 0.25);
+    border: 2px solid rgba(255, 71, 87, 0.30);
 
-    animation: pulse 2.2s infinite ease-out;
+    animation:
+        pulse 2.2s infinite ease-out;
 
     pointer-events: none;
 
@@ -156,12 +188,12 @@ body {
         opacity: 0.8;
 
         box-shadow:
-            0 0 0 0 rgba(255, 71, 87, 0.45);
+            0 0 0 0 rgba(255, 71, 87, 0.5);
     }
 
     70% {
-        width: 360px;
-        height: 360px;
+        width: 380px;
+        height: 380px;
 
         opacity: 0;
 
@@ -170,8 +202,8 @@ body {
     }
 
     100% {
-        width: 360px;
-        height: 360px;
+        width: 380px;
+        height: 380px;
 
         opacity: 0;
     }
@@ -194,15 +226,15 @@ body {
     justify-content: center;
     align-items: center;
 
-    border: 8px solid rgba(255, 255, 255, 0.12);
+    border: 8px solid rgba(255, 255, 255, 0.15);
 
     border-radius: 50%;
 
     background:
         radial-gradient(
             circle at 35% 25%,
-            #ff7b8b 0%,
-            #ff5969 25%,
+            #ff8997 0%,
+            #ff6473 25%,
             #ff4757 55%,
             #d9253a 100%
         );
@@ -227,9 +259,9 @@ body {
     touch-action: manipulation;
 
     box-shadow:
-        0 0 0 10px rgba(255, 71, 87, 0.08),
-        0 20px 50px rgba(255, 71, 87, 0.4),
-        0 0 70px rgba(255, 71, 87, 0.25),
+        0 0 0 10px rgba(255, 71, 87, 0.10),
+        0 20px 50px rgba(0, 0, 0, 0.40),
+        0 0 70px rgba(255, 71, 87, 0.40),
         inset 0 6px 15px rgba(255, 255, 255, 0.35),
         inset 0 -12px 20px rgba(120, 0, 20, 0.35);
 
@@ -240,7 +272,9 @@ body {
 }
 
 
-/* Reflexo no botão */
+/* ==============================
+   REFLEXO DO BOTÃO
+============================== */
 
 .panic-btn::before {
     content: "";
@@ -255,7 +289,8 @@ body {
 
     border-radius: 50%;
 
-    background: rgba(255, 255, 255, 0.2);
+    background:
+        rgba(255, 255, 255, 0.20);
 
     filter: blur(8px);
 
@@ -273,10 +308,10 @@ body {
     filter: brightness(1.1);
 
     box-shadow:
-        0 0 0 14px rgba(255, 71, 87, 0.08),
-        0 25px 60px rgba(255, 71, 87, 0.5),
-        0 0 90px rgba(255, 71, 87, 0.3),
-        inset 0 6px 15px rgba(255, 255, 255, 0.4);
+        0 0 0 14px rgba(255, 71, 87, 0.10),
+        0 25px 60px rgba(0, 0, 0, 0.45),
+        0 0 90px rgba(255, 71, 87, 0.50),
+        inset 0 6px 15px rgba(255, 255, 255, 0.40);
 }
 
 
@@ -285,13 +320,13 @@ body {
 ============================== */
 
 .panic-btn:active {
-    transform: scale(0.9);
+    transform: scale(0.90);
 
     filter: brightness(0.95);
 
     box-shadow:
-        0 8px 20px rgba(255, 71, 87, 0.4),
-        inset 0 10px 25px rgba(80, 0, 10, 0.4);
+        0 8px 20px rgba(0, 0, 0, 0.40),
+        inset 0 10px 25px rgba(80, 0, 10, 0.40);
 }
 
 
@@ -313,7 +348,7 @@ body {
 .panic-btn:disabled {
     cursor: wait;
 
-    opacity: 0.6;
+    opacity: 0.65;
 
     transform: scale(0.95);
 
@@ -344,11 +379,13 @@ body {
 
     font-weight: 600;
 
-    color: #2ed573;
+    color: #ffffff;
 
-    background: rgba(46, 213, 115, 0.08);
+    background:
+        rgba(255, 255, 255, 0.08);
 
-    border: 1px solid rgba(46, 213, 115, 0.15);
+    border:
+        1px solid rgba(255, 255, 255, 0.15);
 
     border-radius: 12px;
 
@@ -364,6 +401,8 @@ body {
     transition:
         opacity 0.3s ease,
         transform 0.3s ease;
+
+    z-index: 10;
 }
 
 .status-text.show {
@@ -373,16 +412,18 @@ body {
 }
 
 .status-text.error {
-    color: #ff6b81;
+    color: #ffffff;
 
-    background: rgba(255, 71, 87, 0.08);
+    background:
+        rgba(255, 71, 87, 0.20);
 
-    border-color: rgba(255, 71, 87, 0.18);
+    border-color:
+        rgba(255, 150, 160, 0.30);
 }
 
 
 /* ==============================
-   RESPONSIVIDADE
+   CELULARES PEQUENOS
 ============================== */
 
 @media (max-width: 400px) {
